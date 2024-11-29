@@ -10,7 +10,9 @@ spring:
       static-locations:
         - file:src/main/resources/static/
         # - classpath:/static/
-
+  threads:
+    virtual:
+      enabled: true
 springdoc:
   enable-hateoas: false
   swagger-ui:
