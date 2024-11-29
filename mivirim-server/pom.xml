@@ -12,13 +12,14 @@
     <artifactId>mivirim-server</artifactId>
 
     <properties>
-        <spring.hateoas.version>2.3.0</spring.hateoas.version>
+        <spring.hateoas.version>2.3.3</spring.hateoas.version>
         <openapi.version>2.5.0</openapi.version>
         <jsr223.groovy.version>4.0.24</jsr223.groovy.version>
 
         <apache.tika.version>2.9.2</apache.tika.version>
         <janusgraph.version>1.0.0-20231016-190430.26ed54f</janusgraph.version>
         <tinkerpop.version>3.7.2</tinkerpop.version>
+        <jte.version>3.1.15</jte.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,14 @@
             <version>${spring.boot.version}</version>
             <optional>true</optional>
         </dependency>
+
+        <!-- Java Template Engine -->
+        <dependency>
+            <groupId>gg.jte</groupId>
+            <artifactId>jte-spring-boot-starter-3</artifactId>
+            <version>${jte.version}</version>
+        </dependency>
+
 
         <!-- Groovy -->
         <dependency>

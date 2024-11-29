@@ -13,6 +13,7 @@ spring:
   threads:
     virtual:
       enabled: true
+
 springdoc:
   enable-hateoas: false
   swagger-ui:
@@ -25,3 +26,8 @@ binary:
 
 server:
   port: 10000
+
+gg:
+  jte:
+    development-mode: true
+    template-location: src/main/java
