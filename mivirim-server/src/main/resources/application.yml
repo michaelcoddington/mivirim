@@ -1,0 +1,25 @@
+logging:
+  config: classpath:log4j2.yaml
+
+spring:
+  servlet:
+    multipart:
+      resolve-lazily: true
+  web:
+    resources:
+      static-locations:
+        - file:src/main/resources/static/
+        # - classpath:/static/
+
+springdoc:
+  enable-hateoas: false
+  swagger-ui:
+    operationsSorter: method
+
+binary:
+  storage:
+    strategy: block
+    block.location: /tmp
+
+server:
+  port: 10000
