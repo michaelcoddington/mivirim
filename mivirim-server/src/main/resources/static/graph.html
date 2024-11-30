@@ -222,16 +222,16 @@
         const width = 1200;
         const height = 800;
 
-        linkArc = d => {
-            //console.info(d.id, d.source, d.target);
+        linkArc = linkData => {
 
-            var sourceX = d.source.x;
-            var sourceY = d.source.y;
-            var sourceRadius = d.source.radius;
 
-            var targetX = d.target.x;
-            var targetY = d.target.y;
-            var targetRadius = d.target.radius + 5;
+            var sourceX = linkData.source.x;
+            var sourceY = linkData.source.y;
+            var sourceRadius = linkData.source.radius;
+
+            var targetX = linkData.target.x;
+            var targetY = linkData.target.y;
+            var targetRadius = linkData.target.radius + 5;
 
             const rise = targetY - sourceY;
             const run = targetX - sourceX;
@@ -255,12 +255,18 @@
                 targetIntersectY = targetY + targetRadius * Math.sin(theta);
             }
 
-            //console.info(`theta of ${d.id} is ${theta} between ${d.source.label} and ${d.target.label}`);
+            linkData.position = {
+                sourceIntersectX: sourceIntersectX,
+                sourceIntersectY: sourceIntersectY,
+                targetIntersectX: targetIntersectX,
+                targetIntersectY: targetIntersectY
+            }
 
-            //const currentPath = `M${d.source.x},${d.source.y}A0,0 0 0,1 ${d.target.x},${d.target.y}`;
-            const newPath = `M${sourceIntersectX},${sourceIntersectY}A0,0 0 0,1 ${targetIntersectX},${targetIntersectY}`;
-
-            return newPath;
+            if (sourceIntersectX < targetIntersectX) {
+                return `M${sourceIntersectX},${sourceIntersectY}A0,0 0 0,1 ${targetIntersectX},${targetIntersectY}`;
+            } else {
+                return `M${targetIntersectX},${targetIntersectY}A0,0 0 0,1 ${sourceIntersectX},${sourceIntersectY}`;
+            }
         };
         console.info("Creating simulation");
 
@@ -333,8 +339,8 @@
             .data(links)
             .enter().append("path")
             .attr('id', d => `link_${d.id}`)
-            .attr("stroke", "#999")
-            .attr("marker-end", d => `url(${new URL(`#arrow`, location)})`);
+            .attr("stroke", "#999");
+
         const linkLabels = linkHolder
             .selectAll(".linkLabel")
             .data(links)
@@ -421,6 +427,20 @@
 
         simulation.on("tick", () => {
             link.attr("d", linkArc);
+            link.attr("marker-start", linkData => {
+                if (linkData.position.sourceIntersectX < linkData.position.targetIntersectX) {
+                    return null;
+                } else {
+                    return`url(${new URL(`#arrow`, location)})`;
+                }
+            });
+            link.attr("marker-end", linkData => {
+                if (linkData.position.sourceIntersectX < linkData.position.targetIntersectX) {
+                    return`url(${new URL(`#arrow`, location)})`;
+                } else {
+                    return null;
+                }
+            });
             node.attr("transform", d => `translate(${d.x},${d.y})`);
         });
         simulation.on("end", () => {
